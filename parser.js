@@ -12,6 +12,10 @@ const header = [
     {id: 'op4', title: 'op4'},
     {id: 'ans', title: 'ans'}
 ];
+const options = {
+    path: null,
+    header: header
+};
 
 function readFiles(dirname, onFileContent, onSuccess, onError) {
 	try {
@@ -29,11 +33,9 @@ function readFiles(dirname, onFileContent, onSuccess, onError) {
 readFiles(
     srcDir,
     async function(file, content) {
+        options.path = `${outDir}${file.split('.html')[0]}.csv`;
+        const csvWriter = createCsvWriter(options);
         let records = [];
-        const csvWriter = createCsvWriter({
-            path: `${outDir}${file.split('.html')[0]}.csv`,
-            header: header
-        });
 
         const html = HTMLParser.parse(content);
         const allQ = html.querySelectorAll('p');
@@ -78,7 +80,7 @@ readFiles(
         await csvWriter.writeRecords(records);
     },
     function(){
-        console.log('--- Done ---');
+        console.log('\n--- Done ---\n');
     },
     function(err){
         console.error(err);
