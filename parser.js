@@ -59,10 +59,13 @@ readFiles(
                 if (ansTxt) {
                     if(qs[1].indexOf(ansTxt) > -1) {
                         ansOp = 'op1';
+                        qs[1] = qs[4];
                     } else if(qs[2].indexOf(ansTxt) > -1) {
                         ansOp = 'op2';
+                        qs[2] = qs[4];
                     } else if(qs[3].indexOf(ansTxt) > -1) {
                         ansOp = 'op3';
+                        qs[3] = qs[4];
                     } else if(qs[4].indexOf(ansTxt) > -1) {
                         ansOp = 'op4';
                     }
