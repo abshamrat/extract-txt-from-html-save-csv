@@ -5,12 +5,12 @@ const fs = require('fs');
 const srcDir = './htmls/';
 const outDir = './outputs/';
 const header = [
-    {id: 'q', title: 'Question'},
-    {id: 'op1', title: 'op1'},
-    {id: 'op2', title: 'op2'},
-    {id: 'op3', title: 'op3'},
-    {id: 'op4', title: 'op4'},
-    {id: 'ans', title: 'ans'}
+    {id: 'q', title: 'question'},
+    {id: 'ans', title: 'answer'},
+    {id: 'op1', title: 'option1'},
+    {id: 'op2', title: 'option2'},
+    {id: 'op3', title: 'option3'},
+    {id: 'ansOp', title: 'ansOption'}
 ];
 const options = {
     path: null,
@@ -43,6 +43,7 @@ readFiles(
         allQ.forEach(q => {
             const qs = q.text.split('\n');
             let ansTxt = null;
+            let ansOp = '';
             try{
                 ansTxt = html.querySelector(`#wrightwrongholder${ qs[0].trim().match(/(\d+)/g)[0]}`).text.replace(/(সঠিক উত্তর:|উত্তর:|\(\W\)|\W\.)/g, '').trim();
             }catch(ex) {}
@@ -57,13 +58,13 @@ readFiles(
     
                 if (ansTxt) {
                     if(qs[1].indexOf(ansTxt) > -1) {
-                        ansTxt = 'op1';
+                        ansOp = 'op1';
                     } else if(qs[2].indexOf(ansTxt) > -1) {
-                        ansTxt = 'op2';
+                        ansOp = 'op2';
                     } else if(qs[3].indexOf(ansTxt) > -1) {
-                        ansTxt = 'op3';
+                        ansOp = 'op3';
                     } else if(qs[4].indexOf(ansTxt) > -1) {
-                        ansTxt = 'op4';
+                        ansOp = 'op4';
                     }
                 }
                 records.push({
@@ -71,7 +72,7 @@ readFiles(
                     op1: qs[1],
                     op2: qs[2],
                     op3: qs[3],
-                    op4: qs[4],
+                    ansOp: ansOp,
                     ans: ansTxt
                 });
             }catch(ex) {}
