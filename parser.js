@@ -42,6 +42,12 @@ readFiles(
     
         allQ.forEach(q => {
             const qs = q.text.split('\n');
+            console.log(qs);
+            let qsLen = qs.length-1;
+            console.log(qsLen);
+            qsLen = qs[qsLen].replace(/\s+/g,'').trim() ? (qsLen): qsLen-1;
+            console.log(qsLen);
+            console.log(qs[qsLen].trim().replace(/(\(\W\)|\W\.|\r)/g, ''));
             let ansTxt = null;
             let ansOp = '';
             try{
@@ -50,11 +56,11 @@ readFiles(
     
             try{
     
-                qs[0] = qs[0].trim().replace(/(\d+)\./g, '');
-                qs[1] = qs[1].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[2] = qs[2].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[3] = qs[3].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[4] = qs[4].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
+                qs[0] = qs.slice(0, qsLen-3).join('<br>').replace(/(\d+)\./g, '').replace(/\s+/g,' ').trim();
+                qs[1] = qs[qsLen-3].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
+                qs[2] = qs[qsLen-2].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
+                qs[3] = qs[qsLen-1].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
+                qs[4] = qs[qsLen].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
     
                 if (ansTxt) {
                     if(qs[1].indexOf(ansTxt) > -1) {
