@@ -42,25 +42,38 @@ readFiles(
     
         allQ.forEach(q => {
             const qs = q.text.split('\n');
-            console.log(qs);
             let qsLen = qs.length-1;
-            console.log(qsLen);
             qsLen = qs[qsLen].replace(/\s+/g,'').trim() ? (qsLen): qsLen-1;
-            console.log(qsLen);
-            console.log(qs[qsLen].trim().replace(/(\(\W\)|\W\.|\r)/g, ''));
             let ansTxt = null;
             let ansOp = '';
             try{
-                ansTxt = html.querySelector(`#wrightwrongholder${ qs[0].trim().match(/(\d+)/g)[0]}`).text.replace(/(সঠিক উত্তর:|উত্তর:|\(\W\)|\W\.)/g, '').trim();
-            }catch(ex) {}
-    
+                // console.log('found: '+q.childNodes);    
+                // ansTxt = q.querySelector(`span`).text.replace(/(সঠিক উত্তর:|উত্তর:|\W\)|\(\W\)|\W\.)/g, '').trim();
+                ansTxt = html.querySelector(`#wrightwrongholder${ qs[0].trim().match(/(\d+)/g)[0]}`).text.replace(/(সঠিক উত্তর:|উত্তর:|\W\)|\(\W\)|\W\.)/g, '').trim();
+                // console.log(ansTxt);
+            }catch(ex) {
+                // console.log(ansTxt);     
+            }
+                 
             try{
-    
-                qs[0] = qs.slice(0, qsLen-3).join('<br>').replace(/(\d+)\./g, '').replace(/\s+/g,' ').trim();
-                qs[1] = qs[qsLen-3].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[2] = qs[qsLen-2].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[3] = qs[qsLen-1].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
-                qs[4] = qs[qsLen].trim().replace(/(\(\W\)|\W\.|\r)/g, '');
+                const qsSlice = qs.slice(0, qsLen-3).map((q, i, arr) => {
+                    if (arr.length > 1)
+                    {
+                        if(i == 0) {
+                            return q + '<br><br>';
+                        } else if (i != arr.length - 1){
+                            return q+'<br>'
+                        } else {
+                            return i !== 1 ? '<br>'+q+'<br>':q+'<br>';
+                        }
+                    }
+                    return q;
+                });
+                qs[0] = qsSlice.join('').replace(/(\d+)\./g, '').replace(/\s+/g,' ').trim();
+                qs[1] = qs[qsLen-3].replace(/(\(\W\)|\W\)|\W\.|\r)/g, '').trim();
+                qs[2] = qs[qsLen-2].replace(/(\(\W\)|\W\)|\W\.|\r)/g, '').trim();
+                qs[3] = qs[qsLen-1].replace(/(\(\W\)|\W\)|\W\.|\r)/g, '').trim();
+                qs[4] = qs[qsLen].replace(/(\(\W\)|\W\)|\W\.|\r)/g, '').trim();
     
                 if (ansTxt) {
                     if(qs[1].indexOf(ansTxt) > -1) {
